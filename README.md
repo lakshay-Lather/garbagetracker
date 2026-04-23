@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Garbage Tracker (Next.js + Tailwind + MongoDB)
 
-## Getting Started
+Full-stack garbage truck tracking and complaint management platform with:
 
-First, run the development server:
+- Login / Signup
+- Role support: admin, user, driver
+- Role-based dashboard
+- Admin panel
+- Users page
+- Drivers page
+- Complaint form
+- User complaint history tracking
+- Home / About / Contact pages
+- Live truck location tracking using Google Maps API
+- Admin complaint status management
+- Driver route assignment and progress updates
+
+## Tech Stack
+
+- Next.js (App Router)
+- Tailwind CSS
+- MongoDB + Mongoose
+- JWT auth with HTTP-only cookies
+- Google Maps JavaScript API
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Fill values in `.env.local`:
+
+- `MONGODB_URI`
+- `MONGODB_DB_NAME` (e.g. `garbage_tracker`)
+- `JWT_SECRET`
+- `ADMIN_INVITE_CODE` (required only to create admin accounts from signup)
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+- `NEXT_PUBLIC_APP_URL`
+
+4. Run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Troubleshooting Auth + MongoDB
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- If signup/login works but data is not visible in MongoDB Atlas, verify `MONGODB_DB_NAME` matches the database you are checking.
+- Admin signup requires the exact `ADMIN_INVITE_CODE`; otherwise signup returns `Invalid admin invite code`.
+- After changing `.env.local`, restart the dev server.
 
-## Learn More
+## Troubleshooting HMR WebSocket (LAN IP)
 
-To learn more about Next.js, take a look at the following resources:
+If you open the app using a LAN URL like `http://192.168.1.37:3000` and see:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`WebSocket connection to ... /_next/webpack-hmr ... cannot parse response`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+then:
 
-## Deploy on Vercel
+- Make sure dev server is started with `npm run dev` (this project binds to `0.0.0.0`).
+- Ensure `next.config.ts` includes your LAN IP in `allowedDevOrigins`.
+- Restart the dev server after any `next.config.ts` changes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Production Build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```
+
+## Free Deployment (Recommended)
+
+Deploy on Vercel:
+
+1. Push this project to GitHub
+2. Import repository in Vercel
+3. Add the same environment variables in Vercel project settings
+4. Deploy
+
